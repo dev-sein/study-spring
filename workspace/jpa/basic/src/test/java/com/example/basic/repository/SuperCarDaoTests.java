@@ -1,6 +1,7 @@
 package com.example.basic.repository;
 
 import com.example.basic.domain.entity.SuperCar;
+import com.example.basic.exception.NoSuchSuperCarException;
 import com.example.basic.type.SuperCarType;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
@@ -8,51 +9,116 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Optional;
+import java.util.Random;
 
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@Slf4j
 @Transactional
 @Rollback(false)
+@Slf4j
 public class SuperCarDaoTests {
 
     @Autowired
-    SuperCarDAO superCarDAO;
+    private SuperCarDAO superCarDAO;
 
     @Test
     public void saveTest(){
-        SuperCar superCar = new SuperCar();
-        superCar.setCarName("붕붕이");
-        superCar.setCarColor("빨강");
-        superCar.setCarPrice(30000L);
-        superCar.setSuperCarType(SuperCarType.HYUNDAI);
-        LocalDateTime date = LocalDateTime.now();
-        superCar.setCarReleaseDate(date);
-        superCarDAO.save(superCar);
+        SuperCarType[] superCarTypes = {SuperCarType.BENTLEY, SuperCarType.FERRARI, SuperCarType.HYUNDAI};
+        String[] colors = {"볼케이노 레드", "아쿠아 블루", "에메랄드 블루"};
+        Random random = new Random();
+
+        for (int i=0; i<100; i++){
+            SuperCar superCar = new SuperCar();
+            superCar.setName("super car" + (i + 1));
+            superCar.setType(superCarTypes[random.nextInt(superCarTypes.length)]);
+            superCar.setColor(colors[random.nextInt(colors.length)]);
+            superCar.setPrice((long)(100 * (i + 1)));
+            superCar.setReleaseDate(LocalDateTime.of(2022, 12, random.nextInt(31) + 1, 06, 00));
+            superCarDAO.save(superCar);
+        }
+    }
+
+    @Test
+    public void findByIdTest(){
+        Optional<SuperCar> foundSuperCar = superCarDAO.findById(2L);
+        foundSuperCar.map(SuperCar::getName).ifPresentOrElse(log::info, () -> {log.info("찾으시는 차량이 없습니다.");});
     }
 
     @Test
     public void deleteTest(){
-        SuperCar superCar = new SuperCar();
-        superCar.setCarName("붕붕이");
-        superCar.setCarColor("빨강");
-        superCar.setCarPrice(30000L);
-        superCar.setSuperCarType(SuperCarType.HYUNDAI);
-
-        superCarDAO.save(superCar);
-        superCarDAO.delete(superCar);
+        Optional<SuperCar> foundSuperCar = superCarDAO.findById(2L);
+        superCarDAO.delete(foundSuperCar.orElseThrow(() -> {throw new NoSuchSuperCarException("찾으시는 차량이 없습니다.");}));
     }
 
     @Test
-    public void findTest(){
-        Optional<SuperCar> optionalSuperCar = superCarDAO.findById(1L);
-        SuperCar superCar = optionalSuperCar.orElseGet(SuperCar::new);
-        optionalSuperCar.ifPresent(supercar -> assertThat(superCar.getCarName()).isEqualTo("빨강색"));
+    public void updateTest(){
+        Optional<SuperCar> foundSuperCar = superCarDAO.findById(3L);
+        foundSuperCar.ifPresent(superCar -> superCar.setColor("아쿠아마린 블루"));
+        foundSuperCar.map(SuperCar::getColor).ifPresent(log::info);
+    }
 
+    @Test
+    public void findAllTest(){
+        superCarDAO.findAll().stream().map(SuperCar::getName).forEach(log::info);
+    }
+
+    @Test
+    public void findAllWithPagingTest(){
+        superCarDAO.findAllWithPaging(41, 10).stream().map(SuperCar::toString).forEach(log::info);
+    }
+
+    @Test
+    public void findAllByReleaseDate(){
+        superCarDAO.findAllByReleaseDate("20221217").stream().map(SuperCar::toString).forEach(log::info);
+    }
+
+    @Test
+    public void findAllBetweenReleaseDate(){
+        LocalDateTime startDate = LocalDateTime.of(2022, 12, 10, 00, 00);
+        LocalDateTime endDate = LocalDateTime.of(2022, 12, 20, 23, 59);
+        log.info(superCarDAO.findAllBetweenReleaseDate(startDate, endDate).size() + "건");
+    }
+
+    @Test
+    public void findAllByNameAndPriceTest(){
+        assertThat(superCarDAO.findAllByNameAndPrice("super car87", 8700L).size()).isEqualTo(1);
+    }
+
+    //    4천만원이 넘는 가격대의 자동차 삭제
+    @Test
+    public void deleteByPriceGreaterThan(){
+        superCarDAO.deleteByPriceGreaterThan(4000L);
+    }
+
+    //    특정 출시일의 자동차 가격을 10% 상승
+    @Test
+    public void updateByReleaseDateTest(){
+        superCarDAO.findAll();
+        superCarDAO.updateByReleaseDate("20221228", 36.5);
+        superCarDAO.findAll().stream().map(superCar -> superCar.getPrice().toString()).forEach(log::info);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
