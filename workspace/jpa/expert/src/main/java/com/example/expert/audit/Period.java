@@ -1,4 +1,4 @@
-package com.example.advanced.audit;
+package com.example.expert.audit;
 
 import lombok.Getter;
 
