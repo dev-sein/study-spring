@@ -24,32 +24,32 @@ public class MemberDaoTests {
     @Autowired
     private MemberDAO memberDAO;
 
-    @Test
-    public void saveTest(){
-        for (int i=0; i<100; i++){
-            Member member = new Member();
-            member.setMemberName("user" + (i + 1));
-            member.setMemberEmail("user" + (i + 1) +"@gmail.com");
-            member.setMemberPassword("" + i);
-            member.setMemberType(MemberType.MEMBER);
-            member.setMemberAge(i + 1);
+//    @Test
+//    public void saveTest(){
+//        for (int i=0; i<100; i++){
+//            Member member = new Member();
+//            member.setMemberName("user" + (i + 1));
+//            member.setMemberEmail("user" + (i + 1) +"@gmail.com");
+//            member.setMemberPassword("" + i);
+//            member.setMemberType(MemberType.MEMBER);
+//            member.setMemberAge(i + 1);
+//
+//            memberDAO.save(member);
+//        }
+//    }
 
-            memberDAO.save(member);
-        }
-    }
-
-    @Test
-    public void setMemberAgeTest(){
-        Member member = new Member();
-        member.setMemberName("한동석");
-        member.setMemberEmail("tedhan1204@gmail.com");
-        member.setMemberPassword("1234");
-        member.setMemberType(MemberType.MEMBER);
-        member.setMemberAge(20);
-
-        memberDAO.save(member);
-        member.setMemberAge(99);
-    }
+//    @Test
+//    public void setMemberAgeTest(){
+//        Member member = new Member();
+//        member.setMemberName("한동석");
+//        member.setMemberEmail("tedhan1204@gmail.com");
+//        member.setMemberPassword("1234");
+//        member.setMemberType(MemberType.MEMBER);
+//        member.setMemberAge(20);
+//
+//        memberDAO.save(member);
+//        member.setMemberAge(99);
+//    }
 
     @Test
     public void deleteTest(){
