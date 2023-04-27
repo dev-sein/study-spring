@@ -1,15 +1,16 @@
 package com.example.advanced.entity.member;
 
 import com.sun.istack.NotNull;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import javax.persistence.*;
 
 @Entity
-@Getter @Setter @ToString
+@Getter @Setter @ToString(exclude = "member")
 @Table(name = "TBL_FILE")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class File {
     @Id @GeneratedValue
     private Long id;
@@ -22,6 +23,14 @@ public class File {
     @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
+
+    @Builder
+    public File(String fileName, String filePath, String fileUuid, Long fileSize) {
+        this.fileName = fileName;
+        this.filePath = filePath;
+        this.fileUuid = fileUuid;
+        this.fileSize = fileSize;
+    }
 }
 
 

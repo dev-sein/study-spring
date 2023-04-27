@@ -1,6 +1,5 @@
 package com.example.intermediate.entity.UserTests;
 
-import com.example.intermediate.entity.member.Member;
 import com.example.intermediate.repository.user.MemberDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;

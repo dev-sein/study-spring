@@ -2,9 +2,7 @@ package com.example.intermediate.entity.user;
 
 import com.example.intermediate.audit.Period;
 import com.sun.istack.NotNull;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -17,6 +15,7 @@ import javax.persistence.*;
 @Getter @Setter @ToString
 @Table(name = "TBL_USER")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class User extends Period { // 부모 클래스를 단독으로 사용하지 않는다면, abstract로 만든다.
     @Id @GeneratedValue
     private Long id;
@@ -25,6 +24,13 @@ public abstract class User extends Period { // 부모 클래스를 단독으로 
     @NotNull private String password;
     @NotNull private String name;
     private String address;
+
+    public User(String userId, String password, String name, String address) {
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.address = address;
+    }
 }
 
 

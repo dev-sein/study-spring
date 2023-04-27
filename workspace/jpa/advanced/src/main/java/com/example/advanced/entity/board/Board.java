@@ -2,17 +2,16 @@ package com.example.advanced.entity.board;
 
 import com.example.advanced.audit.Period;
 import com.sun.istack.NotNull;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Setter @ToString
+@Getter @Setter @ToString(exclude = "replies")
 @Table(name = "TBL_BOARD")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Board extends Period {
     @Id @GeneratedValue
     private Long id;
@@ -37,6 +36,12 @@ public class Board extends Period {
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     @JoinColumn(name = "BOARD_ID")
     List<Reply> replies = new ArrayList<>();
+
+    @Builder
+    public Board(String boardTitle, String boardContent) {
+        this.boardTitle = boardTitle;
+        this.boardContent = boardContent;
+    }
 }
 
 

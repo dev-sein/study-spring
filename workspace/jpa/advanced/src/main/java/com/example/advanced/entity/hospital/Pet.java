@@ -3,17 +3,17 @@ package com.example.advanced.entity.hospital;
 import com.example.advanced.audit.Period;
 import com.example.advanced.type.GenderType;
 import com.sun.istack.NotNull;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Getter @Setter @ToString
+@Getter @Setter @ToString(exclude = "owner")
 @Table(name = "TBL_PET")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Pet extends Period {
     @Id @GeneratedValue
+    @EqualsAndHashCode.Include
     private Long id;
     private String petName;
     @Enumerated(EnumType.STRING)

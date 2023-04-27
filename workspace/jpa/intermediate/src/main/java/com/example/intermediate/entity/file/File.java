@@ -1,9 +1,7 @@
 package com.example.intermediate.entity.file;
 
 import com.example.intermediate.audit.Period;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -17,6 +15,7 @@ import javax.persistence.*;
 @Getter @Setter @ToString
 @Table(name = "TBL_FILE")
 @Inheritance(strategy = InheritanceType.JOINED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class File extends Period {
     @Id @GeneratedValue
     private Long id;
@@ -24,4 +23,29 @@ public class File extends Period {
     private String uuid;
     private String filePath;
     private Long fileSize;
+
+    public File(String name, String uuid, String filePath, Long fileSize) {
+        this.name = name;
+        this.uuid = uuid;
+        this.filePath = filePath;
+        this.fileSize = fileSize;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

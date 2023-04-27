@@ -1,15 +1,14 @@
 package com.example.advanced.entity.member;
 
 import com.sun.istack.NotNull;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter @Setter @ToString
 @Table(name = "TBL_MEMBER")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
     @Id @GeneratedValue
     private Long id;
@@ -19,6 +18,14 @@ public class Member {
     @NotNull @Column(unique = true)
     private String memberEmail;
     @Embedded private MemberAddress memberAddress;
+
+    @Builder
+    public Member(String memberId, String memberPassword, String memberEmail, MemberAddress memberAddress) {
+        this.memberId = memberId;
+        this.memberPassword = memberPassword;
+        this.memberEmail = memberEmail;
+        this.memberAddress = memberAddress;
+    }
 }
 
 
