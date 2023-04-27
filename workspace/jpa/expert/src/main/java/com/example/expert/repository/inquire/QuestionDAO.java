@@ -1,5 +1,7 @@
 package com.example.expert.repository.inquire;
 
+import com.example.expert.entity.inquire.Answer;
+import com.example.expert.entity.inquire.Question;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

@@ -1,16 +1,13 @@
 package com.example.expert.repository.inquire;
 
+import com.example.expert.entity.inquire.Answer;
+import com.example.expert.entity.inquire.Question;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Commit;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.NoResultException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,17 +36,17 @@ public class InquireTests {
 //        question_id는 Question엔티티에서 관리하게 된다.
 //        따라서 Answer엔티티에 question_id를 추가하고 싶다면,
 //        answer에 question을 넣어주어야 한다.
-        Answer answer = new Answer();
-        Question question = new Question();
+//        Answer answer = new Answer();
+//        Question question = new Question();
 
-        answer.setAnswerContents("답변 내용1");
-        questionDAO.save(answer);
-
-        question.setQuestionTitle("문의 제목1");
-        question.setQuestionContents("문의 내용1");
-        question.setAnswer(answer);
-
-        questionDAO.save(question);
+//        answer.setAnswerContents("답변 내용1");
+//        questionDAO.save(answer);
+//
+//        question.setQuestionTitle("문의 제목1");
+//        question.setQuestionContents("문의 내용1");
+//        question.setAnswer(answer);
+//
+//        questionDAO.save(question);
 
 //        ※ 해결
 //        Answer answer = new Answer();

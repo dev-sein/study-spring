@@ -24,12 +24,16 @@ public class BoardTests {
 
     @Test
     public void saveTest(){
-        Board board = new Board();
+//        Board board = new Board();
+        Board board = Board.builder()
+                .boardTitle("테스트 제목1")
+                .boardContent("테스트 내용1")
+                .build();
         Like like1 = new Like();
         Like like2 = new Like();
 
-        board.setBoardTitle("테스트 제목1");
-        board.setBoardContent("테스트 내용1");
+//        board.setBoardTitle("테스트 제목1");
+//        board.setBoardContent("테스트 내용1");
         board.addLike(like1);
         board.addLike(like2);
 
